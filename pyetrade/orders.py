@@ -1,8 +1,6 @@
-import uuid
 from enum import Enum
 
 import requests
-from requests.models import Response
 
 from ._auth import auth
 from ._decorators import ProcessResult
