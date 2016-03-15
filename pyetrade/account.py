@@ -3,7 +3,7 @@ from enum import Enum
 import re
 import requests
 from ._urls import accounts_urls
-from ._authorization import auth as _auth
+from ._auth import auth as _auth
 from ._decorators import ProcessResult
 from ._responses import account_response
 
