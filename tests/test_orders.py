@@ -1,9 +1,9 @@
 from unittest import TestCase
 
-from pyetrade import orders
 from pyetrade import etrade_config
 import os
 from pyetrade._error import EtradeError
+from pyetrade import orders
 
 __author__ = 'glenn'
 
@@ -42,20 +42,44 @@ class TestOrders(TestCase):
         else:
             print(cancel_response.result_message)
 
-            # print(ord)
-            # print(ord.msg)
-            # print(ord.error_type)
-            # print(ord.count)
+    def test_preview_order(self):
+
+        equity_order_props = orders.EquityOrderProps(83405188, 10, 'goog', orders.EnumEquityOrderAction.BUY)
+        order_preview = orders.equity_order_preview(equity_order_props)
+        print(order_preview.preview_id)
+        self.assertIsNotNone(order_preview.account_id)
+
+    def test_place_order(self):
+        equity_order_props = orders.EquityOrderProps(83405188, 10, 'goog', orders.EnumEquityOrderAction.BUY)
+        order_place = orders.equity_order_place(equity_order_props)
+        print(order_place.message_list[0].msg_desc)
+
+    def test_preview_then_place(self):
+        equity_order_props = orders.EquityOrderProps(83405188, 10, 'goog', orders.EnumEquityOrderAction.BUY)
+        order_preview = orders.equity_order_preview(equity_order_props)
+        equity_order_props.previewId = order_preview.preview_id
+        order_place = orders.equity_order_place(equity_order_props)
+        print(order_place.message_list[0].msg_desc)
+
+    def test_change_preview(self):
+        change_props = orders.EquityOrderChangeProps(83405188, 10, 14)
+        # print('preview1', change_props.previewId)
+        # print(orders.equity_change_preview(change_props))
+
+        chg = orders.equity_change_preview(change_props)
+        print(chg.order_time)
+
+
+
+
+
 #
-#         # equity_order_props = EquityOrderProps(83405188, 10, 'goog', EquityOrderAction.BUY)
 #         # print('preview1', equity_order_props.previewId)
 #         # print(order.equity_order_preview(equity_order_props))
 #         # print('preview1', equity_order_props.previewId)
 #         # print(order.equity_order_place(equity_order_props))
 #
-#         # change_props = EquityOrderChangeProps(83405188, 10, 14)
-#         # print('preview1', change_props.previewId)
-#         # print(order.equity_change_preview(change_props))
+
 #         # print('preview1', change_props.previewId)
 #         # print(order.equity_change_place(change_props))
 #
