@@ -154,7 +154,9 @@ class ResponseBase:
         :param key: the key to wrap
         :type key: str
         """
-        if isinstance(self._inner_dict[key], dict):
+        if key not in self._inner_dict:
+            self._inner_dict[key] = []
+        elif isinstance(self._inner_dict[key], dict):
             self._inner_dict[key] = [self._inner_dict[key]]
 
     def _gen_class(self):
