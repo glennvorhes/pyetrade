@@ -2,7 +2,7 @@ from enum import Enum
 
 import requests
 
-from ._authorization import auth
+from ._auth import auth
 from ._decorators import ProcessResult
 from . import etrade_config
 from ._responses.rate_limit_response import RateLimitResponse
