@@ -1,6 +1,6 @@
 from unittest import TestCase
 from pyetrade import etrade_config
-from pyetrade._authorization import auth
+from pyetrade._auth import auth
 
 
 class AuthTest(TestCase):

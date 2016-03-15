@@ -16,10 +16,10 @@ class TestAccounts(TestCase):
         etrade_config.init_props(sandbox=True)
 
     def test_account_list(self):
-        return
 
         resp = account.list_accounts()
-        print(resp.accounts[0].account_desc)
+        print(resp.accounts[0].account_id)
+        print(resp.accounts[0].net_account_value)
 
     def test_get_balance(self):
         return
