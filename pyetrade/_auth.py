@@ -62,7 +62,7 @@ class _Auth(object):
                                      resource_owner_key=self._resource_owner_key,
                                      resource_owner_secret=self._resource_owner_secret)
 
-    def _reauthorize(self):
+    def reauthorize(self):
         print('need to create new authorization')
 
         """create an oauth session using the consumer key/secret combination and for
@@ -192,10 +192,11 @@ class _Auth(object):
         # can reuse if not more than 2 hours since last use and in the same day
         if self._authorization and self._last_used + timedelta(hours=2) > utc_now and \
                 self._last_used.day == utc_now.day and not etrade_config.changed:
+        # if self._authorization and not etrade_config.changed:
             pass
             print('can use existing authorization properties')
         else:
-            self._reauthorize()
+            self.reauthorize()
 
         # update last used time
         self._last_used = datetime.utcnow()
