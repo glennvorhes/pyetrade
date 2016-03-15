@@ -2,7 +2,7 @@ from enum import Enum
 
 import requests as _requests
 
-from ._authorization import auth as _auth
+from ._auth import auth as _auth
 from ._decorators import ProcessResult
 from ._urls import market_urls as _market_urls
 from ._responses import market_response
