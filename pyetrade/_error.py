@@ -19,7 +19,6 @@ class EtradeError:
         :type msg: str
         :return:
         """
-
         self.error_type = error_type
         self.msg = msg
         self.code = code
