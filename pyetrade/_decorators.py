@@ -1,5 +1,7 @@
 from . import _error
 from json.decoder import JSONDecodeError
+import json
+from ._auth import auth
 
 __author__ = 'glenn'
 
@@ -33,16 +35,19 @@ class ProcessResult(object):
                 return _error.EtradeError(_error.ErrorType.PAGE_NOT_FOUND, '404')
             try:
                 response_json = response.json()
-
                 if 'Error' in response_json:
+                    error_json = response_json['Error']
                     etrade_err = _error.EtradeError(
-                        _error.ErrorType.ETRADE_DEFINED,
-                        response_json['Error']['message'],
-                        response_json['Error']['errorCode']
+                        _error.ErrorType.ETRADE_DEFINED.KEYERROR,
+                        error_json['message'] if 'message' in error_json else '',
+                        error_json['errorCode'] if 'errorCode' in error_json else None
                     )
-                    print(self._response_class.__name__)
-                    print(etrade_err.msg)
                     return etrade_err
+                    # if etrade_err.msg.find('oauth_problem') > -1:
+                    #     auth.reauthorize()
+                    #     return wrapped_f(*args, **kwargs)
+                    # else:
+                    #     return etrade_err
                 else:
                     return self._response_class(response_json)
             except JSONDecodeError:
