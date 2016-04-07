@@ -166,3 +166,10 @@ class ResponseBase:
         :return:
         """
         _gen_class_stub(self._inner_dict)
+
+    def _return_key_val_or_none(self, key):
+        if key not in self._inner_dict:
+            return None
+        else:
+            return self._inner_dict[key]
+

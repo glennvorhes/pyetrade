@@ -52,12 +52,17 @@ class TestOrders(TestCase):
     def test_place_order(self):
         equity_order_props = orders.EquityOrderProps(83405188, 10, 'goog', orders.EnumEquityOrderAction.BUY)
         order_place = orders.equity_order_place(equity_order_props)
+        if isinstance(order_place, EtradeError):
+            print(order_place.msg)
         print(order_place.message_list[0].msg_desc)
 
     def test_preview_then_place(self):
         equity_order_props = orders.EquityOrderProps(83405188, 10, 'goog', orders.EnumEquityOrderAction.BUY)
         order_preview = orders.equity_order_preview(equity_order_props)
+        if isinstance(order_preview, EtradeError):
+            print(order_preview.msg)
         equity_order_props.previewId = order_preview.preview_id
+
         order_place = orders.equity_order_place(equity_order_props)
         print(order_place.message_list[0].msg_desc)
 
@@ -67,7 +72,20 @@ class TestOrders(TestCase):
         # print(orders.equity_change_preview(change_props))
 
         chg = orders.equity_change_preview(change_props)
+        if isinstance(chg, EtradeError):
+            print(chg.msg)
         print(chg.order_time)
+
+    def test_change_place(self):
+        change_props = orders.EquityOrderChangeProps(83405188, 10, 14)
+        # print('preview1', change_props.previewId)
+        # print(orders.equity_change_preview(change_props))
+
+        chg = orders.equity_change_place(change_props)
+        if isinstance(chg, EtradeError):
+            print(chg.msg)
+
+        print(chg.message_list[0].msg_desc)
 
 
 

@@ -454,34 +454,34 @@ def equity_change_preview(equity_order_change_props):
 
     data = {
         "previewChangeEquityOrder": {
-            "-xmlns": "http://order.etws.etrade.com",
+            # "-xmlns": "http://order.etws.etrade.com",
             "changeEquityOrderRequest": equity_order_change_props.prop_dict
         }
     }
 
     return requests.post(order_urls.orders_equity_change_preview(), json=data, auth=auth.get_current)
 
-#
-# @ProcessResult('placeChangeEquityOrderResponse')
-# def equity_change_place(equity_order_change_props):
-#     """
-#     Place equity order change
-#
-#     :param equity_order_change_props:
-#     :type equity_order_change_props: EquityOrderChangeProps
-#     :return: the change response
-#     :rtype: Response
-#     """
-#     assert isinstance(equity_order_change_props, EquityOrderChangeProps)
-#     data = {
-#         "placeChangeEquityOrder": {
-#             "-xmlns": "http://order.etws.etrade.com",
-#             "changeEquityOrderRequest": equity_order_change_props.get_prop_dict()
-#         }
-#     }
-#
-#     return requests.post(order_urls.orders_equity_change_place, json=data, auth=auth.current)
-#
+
+@ProcessResult(order_response.EquityOrderChangePlace)
+def equity_change_place(equity_order_change_props):
+    """
+    Place equity order change
+
+    :param equity_order_change_props:
+    :type equity_order_change_props: EquityOrderChangeProps
+    :return: the change response
+    :rtype: order_response.EquityOrderChangePlace|EtradeError
+    """
+    assert isinstance(equity_order_change_props, EquityOrderChangeProps)
+    data = {
+        "placeChangeEquityOrder": {
+            "-xmlns": "http://order.etws.etrade.com",
+            "changeEquityOrderRequest": equity_order_change_props.prop_dict
+        }
+    }
+
+    return requests.post(order_urls.orders_equity_change_place(), json=data, auth=auth.get_current)
+
 #
 # @ProcessResult('previewOptionOrderResponse', add_preview_id=True)
 # def option_order_preview(option_order_props):

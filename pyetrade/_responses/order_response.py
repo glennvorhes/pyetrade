@@ -1,5 +1,4 @@
 from ._response_base import ResponseBase as _ResponseBase
-import json
 
 
 class _SymbolInfo:
@@ -119,43 +118,61 @@ class _OrderMessage:
         self.msg_desc = msg_desc
 
 
-class EquityOrderPreview(_ResponseBase):
+class _EquityOrderBase(_ResponseBase):
     def __init__(self, input_dict):
         super().__init__(input_dict)
         self._inner_dict = self._inner_dict['equity_order_response']
+        self._wrap_dict_in_list('message_list')
+
         self.account_id = self._inner_dict['account_id']
         self.all_or_none = self._inner_dict['all_or_none']
         self.estimated_commission = self._inner_dict['estimated_commission']
         self.estimated_total_amount = self._inner_dict['estimated_total_amount']
-        self.limit_price = self._inner_dict['limit_price']
+        self.limit_price = self._return_key_val_or_none('limit_price')
+        self.message_list = [_OrderMessage(**m) for m in self._inner_dict['message_list']]
         self.order_action = self._inner_dict['order_action']
         self.order_term = self._inner_dict['order_term']
-        self.preview_id = None if 'preview_id' not in self._inner_dict else self._inner_dict['preview_id']
-        self.preview_time = None if 'preview_time' not in self._inner_dict else self._inner_dict['preview_time']
         self.price_type = self._inner_dict['price_type']
         self.quantity = self._inner_dict['quantity']
         self.reserve_order = self._inner_dict['reserve_order']
         self.reserve_quantity = self._inner_dict['reserve_quantity']
-        self.stop_price = self._inner_dict['stop_price']
+        self.stop_price = self._return_key_val_or_none('stop_price')
         self.symbol = self._inner_dict['symbol']
         self.symbol_desc = self._inner_dict['symbol_desc']
 
 
-class EquityOrderPlace(EquityOrderPreview):
+class _EquityOrderWOrderNumTime(_EquityOrderBase):
+
     def __init__(self, input_dict):
         super().__init__(input_dict)
-        del self.preview_id
-        del self.preview_time
-        self._wrap_dict_in_list('message_list')
-        self.message_list = [_OrderMessage(**m) for m in self._inner_dict['message_list']]
-        """
-        :type: list of _OrderMessage
-        """
-
-
-class EquityOrderChangePreview(_ResponseBase):
-    def __init__(self, input_dict):
-        super().__init__(input_dict)
-        self._inner_dict = self._inner_dict['equity_order_response']
         self.order_num = self._inner_dict['order_num']
         self.order_time = self._inner_dict['order_time']
+
+
+class EquityOrderPreview(_EquityOrderBase):
+
+    def __init__(self, input_dict):
+        super().__init__(input_dict)
+        self.routingDestination = self._return_key_val_or_none('routing_destination')
+        self.preview_id = self._inner_dict['preview_id']
+        self.preview_time = self._inner_dict['preview_time']
+
+
+class EquityOrderPlace(_EquityOrderWOrderNumTime):
+    def __init__(self, input_dict):
+        super().__init__(input_dict)
+        self.routingDestination = self._return_key_val_or_none('routing_destination')
+
+
+class EquityOrderChangePreview(_EquityOrderWOrderNumTime):
+    def __init__(self, input_dict):
+        super().__init__(input_dict)
+        self.preview_id = self._inner_dict['preview_id']
+        self.preview_time = self._inner_dict['preview_time']
+
+
+class EquityOrderChangePlace(_EquityOrderWOrderNumTime):
+    def __init__(self, input_dict):
+        super().__init__(input_dict)
+        self.preview_id = self._inner_dict['preview_id']
+        self.preview_time = self._inner_dict['preview_time']
