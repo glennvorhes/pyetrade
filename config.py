@@ -38,55 +38,27 @@ sqla_tmpl = 'postgresql://{usr}:{pwd}@{host}:{port}/{db}'
 
 use_local = True
 
-#
-# try:
-#     _pwd = 'turkey'
-#     _host = 'trading'
-#     _db = 'trading'
-#     conn = psycopg2.connect(psyco_template.format(usr=_usr, pwd=_pwd, host=_host, port=_port, db=_db))
-#     conn.close()
-#     engine = create_engine(sqla_tmpl.format(usr=_usr, pwd=_pwd, host=_host, port=_port, db=_db))
-#     print('using server database')
-# except psycopg2.OperationalError:
-#     try:
-#         _pwd = 'password'
-#         _host = 'localhost'
-#         _db = 'trading2'
-#         conn = psycopg2.connect(psyco_template.format(usr=_usr, pwd=_pwd, host=_host, port=_port, db=_db))
-#         conn.close()
-#         engine = create_engine(sqla_tmpl.format(usr=_usr, pwd=_pwd, host=_host, port=_port, db=_db))
-#         print('using local database')
-#     except psycopg2.OperationalError:
-#         print('no database available')
-
 if use_local:
-    _pwd = 'turkey'
-    _host = 'localhost'
-    _db = 'trading'
-    conn = psycopg2.connect(psyco_template.format(usr=_usr, pwd=_pwd, host=_host, port=_port, db=_db))
-    conn.close()
-    engine = create_engine(sqla_tmpl.format(usr=_usr, pwd=_pwd, host=_host, port=_port, db=_db))
+    pass
+    # conn = psycopg2.connect(psyco_template.format(usr=_usr, pwd=_pwd, host=_host, port=_port, db=_db))
+    # conn.close()
+    # engine = create_engine(sqla_tmpl.format(usr=_usr, pwd=_pwd, host=_host, port=_port, db=_db))
 
 else:
-    _pwd = 'turkey'
-    _host = 'lappy'
-    _db = 'trading'
-    conn = psycopg2.connect(psyco_template.format(usr=_usr, pwd=_pwd, host=_host, port=_port, db=_db))
-    conn.close()
-    engine = create_engine(sqla_tmpl.format(usr=_usr, pwd=_pwd, host=_host, port=_port, db=_db))
+    pass
+    # conn = psycopg2.connect(psyco_template.format(usr=_usr, pwd=_pwd, host=_host, port=_port, db=_db))
+    # conn.close()
+    # engine = create_engine(sqla_tmpl.format(usr=_usr, pwd=_pwd, host=_host, port=_port, db=_db))
 
 _Session = scoped_session(sessionmaker(bind=engine))
 
-
-def open_sqlalchemy_session():
-    """
-
-    :return:
-    :rtype: Session
-    """
-    return _Session()
-
-
-
+#
+# def open_sqlalchemy_session():
+#     """
+#
+#     :return:
+#     :rtype: Session
+#     """
+#     return _Session()
 
 Base = declarative_base(bind=engine)
